@@ -224,7 +224,7 @@ if (isset($sids[0])) {
         });
         line.setMap(map);
       };
-      google.maps.event.addDomListener(window, 'load', initialize);
+//      google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 <?php if ($setZoomManually === 0) { ?>
     <!-- Flot Local Javascript files -->
