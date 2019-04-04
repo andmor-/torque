@@ -11,10 +11,15 @@ if (isset($_GET["sid"])) {
     $sql = mysqli_query($con, "SELECT * FROM $db_table_full join $db_sessions_table on $db_table_full.session = $db_sessions_table.session WHERE $db_table_full.session=".quote_value($session_id)." ORDER BY $db_table_full.time DESC;") or die(mysqli_error($con));
 
     if ($_GET["filetype"] == "csv") {
+        // Download the file
+        $csvfilename = "torque_session_".$session_id.".csv";
+        header('Content-type: application/csv');
+        header('Content-Disposition: attachment; filename='.$csvfilename);
+
         $columns_total = mysqli_num_fields($sql);
 
         // Get The Field Name
-	$counter = 0;
+        $counter = 0;
         while ($property = mysqli_fetch_field_direct($sql, $counter)) {
             $output .='"'.$property->name.'",';
             $counter++;
@@ -31,15 +36,15 @@ if (isset($_GET["sid"])) {
 
         mysqli_free_result($sql);
 
-        // Download the file
-        $csvfilename = "torque_session_".$session_id.".csv";
-        header('Content-type: application/csv');
-        header('Content-Disposition: attachment; filename='.$csvfilename);
-
         echo $output;
         exit;
     }
     else if ($_GET["filetype"] == "json") {
+        // Download the file
+        $jsonfilename = "torque_session_".$session_id.".json";
+        header('Content-type: application/json');
+        header('Content-Disposition: attachment; filename='.$jsonfilename);
+
         $rows = array();
         while($r = mysqli_fetch_assoc($sql)) {
             $rows[] = $r;
@@ -47,11 +52,6 @@ if (isset($_GET["sid"])) {
         $jsonrows = json_encode($rows);
 
         mysqli_free_result($sql);
-
-        // Download the file
-        $jsonfilename = "torque_session_".$session_id.".json";
-        header('Content-type: application/json');
-        header('Content-Disposition: attachment; filename='.$jsonfilename);
 
         echo $jsonrows;
     }
