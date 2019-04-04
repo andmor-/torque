@@ -2,8 +2,7 @@
 //echo "<!-- Begin get_sessions.php at ".date("H:i:s", microtime(true))." -->\r\n";
 // this page relies on being included from another page that has already connected to db
 
-session_set_cookie_params(0,dirname($_SERVER['SCRIPT_NAME']));
-if (!isset($_SESSION)) { session_start(); }
+if (!isset($_SESSION)) { session_set_cookie_params(0,dirname($_SERVER['SCRIPT_NAME'])); @session_regenerate_id(true); session_start(); }
 
 // Process the possibilities for the year and month filter: Set in POST, Set in GET, select all possible year/months, or the default: select the current year/month
 if ( isset($_POST["selyearmonth"]) ) {
