@@ -12,7 +12,7 @@ require_once("./get_sessions.php");
 require_once("./get_columns.php");
 require_once("./plot.php");
 
-$_SESSION['recent_session_id'] = strval(max($sids));
+$_SESSION['recent_session_id'] = strval(max(array($sids)));
 // Check if there is time set in the session; if not, set it
 if ( isset($_SESSION['time'] ) ) {
         $timezone = $_SESSION['time'];
