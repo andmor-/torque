@@ -154,7 +154,7 @@ if (sizeof($_GET) > 0) {
     $row = mysqli_fetch_assoc($sessionqry);
     if ( ! $row ) {
 #echo "<br />Debug 23<br />";
-      $sessioninsertstring = "INSERT INTO $db_sessions_table (".quote_names($sesskeys).", timestart, sessionsize) VALUES (".quote_values($sessvalues).", $sesstime, '1')";
+      $sessioninsertstring = "INSERT INTO $db_sessions_table (".quote_names($sesskeys).", timestart, timeend, sessionsize) VALUES (".quote_values($sessvalues).", $sesstime, $sesstime, '1')";
 #echo "<br />Debug 24 $sessioninsertstring<br />";
       mysqli_query($con, $sessioninsertstring) or die(mysqli_error($con));
     } else {
