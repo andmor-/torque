@@ -182,11 +182,11 @@ if (sizeof($_GET) > 0) {
     mysqli_query($con, $sql) or die(mysqli_error($con));
     // Update session variables
     // If this is the earliest timestamp for this session, update the "Session start time"
-    if ( $sessTimeStart > $sesstime ) {
+    if ( is_numeric($sesstime) && ( ! is_numeric($sessTimeStart) || $sessTimeStart > $sesstime) ) {
       $sessTimeStart = $sesstime;
     }
     // If this is the latest timestamp for this session, update the "Session end time"
-    if ( $sessTimeEnd < $sesstime ) {
+    if ( is_numeric($sesstime) && ( ! is_numeric($sessTimeEnd) || $sessTimeEnd < $sesstime ) ) {
       $sessTimeEnd = $sesstime;
     }
     // Increment the session size counter
