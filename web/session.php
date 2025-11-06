@@ -1,6 +1,6 @@
 <?php
 //echo "<!-- Begin session.php at ".date("H:i:s", microtime(true))." -->\r\n";
-$loadstart = date("g:i:s A", microtime(true));
+$loadstart = date("g:i:s A", intval(microtime(true)));
 $loadmicrostart = explode(' ', microtime());
 $loadmicrostart = $loadmicrostart[1] + $loadmicrostart[0];
 ini_set('memory_limit', '-1');
@@ -12,7 +12,7 @@ require_once("./get_sessions.php");
 require_once("./get_columns.php");
 require_once("./plot.php");
 
-$_SESSION['recent_session_id'] = strval(max(array($sids)));
+$_SESSION['recent_session_id'] = strval(max($sids));
 // Check if there is time set in the session; if not, set it
 if ( isset($_SESSION['time'] ) ) {
         $timezone = $_SESSION['time'];
@@ -64,8 +64,8 @@ if (isset($sids[0])) {
   if($idx>0) {
     $session_id_next = $sids[$idx-1];
   }
-  $tableYear = date( "Y", $session_id/1000 );
-  $tableMonth = date( "m", $session_id/1000 );
+  $tableYear = date( "Y", intval($session_id/1000 ));
+  $tableMonth = date( "m", intval($session_id/1000 ));
   $db_table_full = "{$db_table}_{$tableYear}_{$tableMonth}";
   // Get GPS data for the currently selectedsession
   $sessionqry = mysqli_query($con, "SELECT kff1006, kff1005 FROM $db_table_full
@@ -224,7 +224,7 @@ if (isset($sids[0])) {
         });
         line.setMap(map);
       };
-//      google.maps.event.addDomListener(window, 'load', initialize);
+//      google.maps.event.addDomListener(window, 'load', Initialize);
     </script>
 <?php if ($setZoomManually === 0) { ?>
     <!-- Flot Local Javascript files -->
@@ -249,7 +249,7 @@ if (isset($sids[0])) {
         var flotData = [
 <?php   $i=1; ?>
 <?php   while ( isset(${'var' . $i }) && !empty(${'var' . $i }) ) { ?>
-            { data: <?php echo "s$i"; ?>, label: <?php echo "${'v'.$i.'_label'}"; ?> }<?php if ( isset(${'var'.($i+1)}) ) echo ","; ?>
+             { data: <?php echo "s$i"; ?>, label: <?php echo "{${'v'.$i.'_label'}}"; ?> }<?php if ( isset(${'var'.($i+1)}) ) echo ","; ?>
 <?php     $i = $i + 1; ?>
 <?php   } ?>
         ];
@@ -408,7 +408,7 @@ if (isset($sids[0])) {
               <select data-placeholder="Choose OBD2 data..." multiple class="chosen-select" size="<?php echo $numcols; ?>" style="width:100%;" id="plot_data" onsubmit="onSubmitIt" name="plotdata[]">
                 <option value=""></option>
 <?php   foreach ($coldata as $xcol) { ?>
-                <option value="<?php echo $xcol['colname']; ?>" <?php $i = 1; while ( isset(${'var' . $i}) ) { if ( (${'var' . $i} == $xcol['colname'] ) OR ( $xcol['colfavorite'] == 1 ) ) { echo " selected"; } $i = $i + 1; } ?>><?php echo $xcol['colcomment']; ?></option>
+                <option value="<?php echo $xcol['colname']; ?>" <?php $i = 1; while ( isset(${'var' . $i}) ) { if ( (${'var' . $i} == $xcol['colname'] ) OR (array_key_exists('colfavorite', $xcol) AND $xcol['colfavorite'] == 1 ) ) { echo " selected"; } $i = $i + 1; } ?>><?php echo $xcol['colcomment']; ?></option>
 <?php   } ?>
             </select>
 <?php   if ( $filteryearmonth <> "" ) { ?>
@@ -512,7 +512,7 @@ if (isset($sids[0])) {
           <a href="./pid_edit.php" title="Edit PIDs">Edit PIDs</a><br />
           <a href="https://github.com/surfrock66/torque" title="View Source On Github">View Source On Github</a>
           <p style="font-size:10px;margin-top:20px;" >
-            Render Start: <?php echo $loadstart; ?>; Render End: <?php $loadend = date("h:i:s A", microtime(true)); echo $loadend; ?><br />
+            Render Start: <?php echo $loadstart; ?>; Render End: <?php $loadend = date("h:i:s A", intval(microtime(true))); echo $loadend; ?><br />
             Load Time: <?php $loadmicroend = explode(' ', microtime()); $loadmicroend = $loadmicroend[1] + $loadmicroend[0]; echo $loadmicroend-$loadmicrostart; ?> seconds<br />
             Session ID: <?php echo $session_id; ?>
           </p>
