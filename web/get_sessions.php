@@ -3,8 +3,9 @@
 // this page relies on being included from another page that has already connected to db
 
 if (!isset($_SESSION)) { 
-	session_set_cookie_params(0,dirname($_SERVER['SCRIPT_NAME']));
-	session_start(); 
+      session_set_cookie_params(0,dirname($_SERVER['SCRIPT_NAME'])); 
+#      @session_regenerate_id(true); 
+      session_start(); 
 }
 
 // Process the possibilities for the year and month filter: Set in POST, Set in GET, select all possible year/months, or the default: select the current year/month
@@ -64,9 +65,9 @@ $seshdates = array();
 $seshsizes = array();
 $seshprofile = array();
 while($row = mysqli_fetch_assoc($sessionqry)) {
-    $session_duration_str = gmdate("H:i:s", ((int)$row["timeend"] - (int)$row["timestart"])/1000);
+    $session_duration_str = gmdate("H:i:s", intval(($row["timeend"] - $row["timestart"])/1000));
     $session_profileName = $row["profileName"];
-    $session_size = $row["sessionsize"];
+    $session_size = intval($row["sessionsize"]);
 
     // Do not show sessions smaller than $min_session_size
     if ($session_size >= $min_session_size) {
